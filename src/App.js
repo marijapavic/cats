@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+function App(){
+  const [cat, setCat] = useState()
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleButtonClick = () => {
+    setIsLoading(true)
+      fetch("https://api.thecatapi.com/v1/images/search")
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        setCat(data)
+      })
+      .catch(error => console.log(error))
+      .finally(()=> setIsLoading(false))
+    
+  }
+
+  return(
+    <>
+      <div className="nav">
+        <button disabled={isLoading} onClick={handleButtonClick}>
+        {cat ? "More" : "Cats plz"}
+        </button>
+      </div>
+      {isLoading && <p>They are coming...</p>}
+      {cat && cat.map(cat => 
+          <div key={cat.id}><img src={cat.url} alt={cat.id} /></div>
+      )}
+    </>
+  )
 }
 
-export default App;
+export default App
