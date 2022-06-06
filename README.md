@@ -1,3 +1,3 @@
 # api-cats
 
--random pictures of cats 😊
+- random pictures of cats 😊
